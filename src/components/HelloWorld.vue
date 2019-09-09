@@ -1,114 +1,119 @@
+/* eslint-disable */
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
+  <div id="app">
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>UserName</th>
+          <th>Project Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="data in localJson"
+          :key="data.id"
+          v-bind:class="[data.isActive ? 'activeClass' : null]"
         >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+          <td>{{ data.id }}</td>
+          <td>{{ data.username }}</td>
+          <td>{{ data.project_count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button v-on:click="toggleHighlight()">New Users</button>
   </div>
 </template>
 
 <script>
+import json from "../users.json";
+
 export default {
-  name: "HelloWorld",
-  props: {
-    msg: String
+  name: "app",
+  data() {
+    return {
+      localJson: json
+    };
+  },
+
+  methods: {
+    addUser: function() {
+      for (let i = 0; i < this.localJson.length; i++) {
+        var data = this.localJson[i];
+        if (data.login_count === 0) {
+          Object.assign(data, { isActive: false });
+        } else {
+          data;
+        }
+      }
+      return this.localJson;
+    },
+
+    toggleHighlight: function() {
+      for (let i = 0; i < this.localJson.length; i++) {
+        var data = this.localJson[i];
+        if (data.login_count === 0) {
+          if (data.isActive === false) {
+            data.isActive = true;
+          } else {
+            data.isActive = false;
+          }
+        }
+        this.$forceUpdate();
+      }
+    }
+  },
+
+  beforeMount() {
+    this.addUser();
+  },
+
+  computed: {
+    computedHighlight: function() {
+      return this.localJson;
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+button {
+  padding: 6px;
+  margin: 15px;
+  width: 30%;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+table {
+  font-family: "Open Sans", sans-serif;
+  width: 750px;
+  border-collapse: collapse;
+  border: 3px solid #44475c;
+  margin: 10px 10px 0 10px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+table th {
+  text-transform: uppercase;
+  text-align: left;
+  background: #44475c;
+  color: #fff;
+  padding: 8px;
+  min-width: 30px;
 }
-a {
-  color: #42b983;
+
+table td {
+  text-align: left;
+  padding: 8px;
+  border-right: 1px solid #7d82a8;
+  border-bottom: 1px solid #7d82a8;
+}
+table td:last-child {
+  border-right: none;
+}
+#app {
+  margin: auto;
+  width: 50%;
+}
+.activeClass {
+  background: red;
 }
 </style>

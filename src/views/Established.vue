@@ -1,17 +1,17 @@
 /* eslint-disable */
 <template>
-  <div class="home">
-    <HelloWorld />
+  <div class="established">
+    <Table />
   </div>
 </template>
 
 <script>
-import HelloWorld from "@/components/HelloWorld.vue";
+import Table from "@/components/establishedUsersTable.vue";
 
 export default {
-  name: "New",
+  name: "established",
   components: {
-    HelloWorld
+    Table
   }
 };
 </script>
