@@ -11,7 +11,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="data in localsJson"
+          v-for="data in localsJson[0]"
           :key="data.id"
           v-bind:class="[data.isActive ? 'activeClass' : null]"
         >
@@ -32,26 +32,25 @@ export default {
   name: "established",
   data() {
     return {
-      localsJson: json
+      myJson: json,
+      localsJson: []
     };
   },
 
   methods: {
-    addUser: function() {
-      for (let i = 0; i < this.localsJson.length; i++) {
-        var data = this.localsJson[i];
-        if (data.login_count > 0) {
+    addUser: function(){
+      this.localsJson.push(this.myJson);
+    },   
+    addIsActiveFalse: function() {
+      for (let i = 0; i < this.myJson.length; i++) {
+        var data = this.localsJson[0][i];
           Object.assign(data, { isActive: false });
-        } else {
-          data;
-        }
       }
-      return this.localsJson;
     },
 
     toggleHighlight: function() {
-      for (let i = 0; i < this.localsJson.length; i++) {
-        var data = this.localsJson[i];
+      for (let i = 0; i < this.localsJson[0].length; i++) {
+        var data = this.localsJson[0][i];
         if (data.login_count > 0) {
           if (data.isActive === false) {
             data.isActive = true;
@@ -66,11 +65,11 @@ export default {
 
   beforeMount() {
     this.addUser();
+    this.addIsActiveFalse();
   },
-
   computed: {
     computedHighlight: function() {
-      return this.localsJson;
+      return this.localJson[0];
     }
   }
 };
